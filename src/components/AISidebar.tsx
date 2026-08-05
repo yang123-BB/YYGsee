@@ -342,8 +342,16 @@ export function AISidebar({ componentType, currentParams, onApplyParams, context
           // Schema parsing succeeded but no fields mapped — AI likely used internal names, fall through
         }
         // Direct param apply — works when AI uses internal field names (b, h, top, bottom, etc.)
-        onApplyParams(params as Partial<AnyParams>);
-        const merged = { ...currentParamsRef.current, ...params } as AnyParams;
+        // Sanitize: only keep primitive values (string/number/boolean), drop objects/arrays for notation fields
+        const sanitized: Record<string, unknown> = {};
+        for (const [k, v] of Object.entries(params)) {
+          if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
+            sanitized[k] = v;
+          }
+          // else: skip non-primitive values (objects/arrays) to prevent parseStirrup etc. from crashing
+        }
+        onApplyParams(sanitized as Partial<AnyParams>);
+        const merged = { ...currentParamsRef.current, ...sanitized } as AnyParams;
         const compliance = runComplianceCheck(merged);
         const hasIssues = compliance.some(c => c.status !== 'pass');
         return { success: true, message: `已更新参数: ${Object.keys(params).join(', ')}${hasIssues ? '（规范校验发现问题）' : ''}` };
