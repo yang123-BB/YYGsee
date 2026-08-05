@@ -4,9 +4,8 @@ const isProd = process.env.NODE_ENV === 'production';
 const isNetlify = !!process.env.NETLIFY;
 const isVercel  = !!process.env.VERCEL;
 
-// basePath: empty for root-path deployment (yang123-bb.github.io)
-// Set to '/RebarViz' only if deploying under a sub-path
-const basePath = '';
+// basePath: '/YYGsee' for GitHub Pages sub-path deployment
+const basePath = '/YYGsee';
 
 const nextConfig: NextConfig = {
   output: 'export',
