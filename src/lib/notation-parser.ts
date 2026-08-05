@@ -654,12 +654,14 @@ function parseFoundationNotation(text: string): NotationResult {
  * @returns 解析结果，success=false 时应 fallback 到 AI
  */
 export function tryParseNotation(text: string, componentType: ComponentType): NotationResult {
-  const trimmed = text.trim();
+  try {
+    if (typeof text !== 'string') return { success: false };
+    const trimmed = text.trim();
 
-  // 如果包含明显的自然语言问句词，不尝试本地解析
-  if (/[?？]|怎么|为什么|什么是|如何|能不能|帮我|请问|计算/.test(trimmed)) {
-    return { success: false };
-  }
+    // 如果包含明显的自然语言问句词，不尝试本地解析
+    if (/[?？]|怎么|为什么|什么是|如何|能不能|帮我|请问|计算/.test(trimmed)) {
+      return { success: false };
+    }
 
   // 按当前构件类型优先匹配，如果失败再尝试其他类型
   switch (componentType) {
@@ -725,4 +727,8 @@ export function tryParseNotation(text: string, componentType: ComponentType): No
   }
 
   return { success: false };
+  } catch (err) {
+    console.warn('[tryParseNotation] failed:', err instanceof Error ? err.message : err);
+    return { success: false };
+  }
 }
