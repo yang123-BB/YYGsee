@@ -8,6 +8,12 @@ import { getApiKeys, setApiKey, clearApiKey, maskKey } from '@/lib/api-keys';
 import type { ApiKeyStore } from '@/lib/api-keys';
 
 const PROVIDER_META: Record<string, { color: string; bg: string; url: string; desc: string }> = {
+  zhipu: {
+    color: 'text-cyan-700',
+    bg: 'bg-cyan-50',
+    url: 'https://open.bigmodel.cn/usercenter/apikeys',
+    desc: '智谱 GLM-4-Flash 免费·支持识图 (GLM-4V-Flash)',
+  },
   deepseek: {
     color: 'text-blue-700',
     bg: 'bg-blue-50',
