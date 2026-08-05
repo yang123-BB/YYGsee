@@ -104,7 +104,7 @@ async function directFetch(opts: AIFetchOptions): Promise<Response> {
     temperature,
     ...(provider.extraParams ?? {}),
   };
-  payload[provider.maxTokensParam ?? 'max_tokens'] = max_tokens;
+  payload[provider.maxTokensParam ?? 'max_tokens'] = resolveMaxTokens(provider, model, max_tokens);
 
   if (tools && tools.length > 0) {
     payload.tools = tools;
@@ -124,4 +124,15 @@ async function directFetch(opts: AIFetchOptions): Promise<Response> {
     body: JSON.stringify(payload),
     signal,
   });
+}
+
+/**
+ * Resolve max_tokens for a (provider, model) pair.
+ * Priority: provider.maxTokens map lookup → provider.maxTokens scalar → fallback default.
+ * Used to enforce model-specific caps (e.g. Zhipu glm-4v-flash max=1024).
+ */
+function resolveMaxTokens(provider: AIProvider, model: string, fallback: number): number {
+  if (provider.maxTokens == null) return fallback;
+  if (typeof provider.maxTokens === 'number') return provider.maxTokens;
+  return provider.maxTokens[model] ?? fallback;
 }
