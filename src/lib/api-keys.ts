@@ -10,9 +10,9 @@
 const STORAGE_KEY = 'rebarviz_api_keys';
 
 // 内置默认 API Key（如不需要可清空对应字段）
-const DEFAULT_KEYS: ApiKeyStore = {
-  agnes: 'sk-wYmpnlrHTOoGxLhSt6pzDUNLeMx1uIRusDiaAGj1TSEUcQ84',
-};
+// 注：不要在此硬编码任何 provider 的真实 Key——这是一个公开仓库（yang123-BB/YYGsee）
+// 任何提交的 Key 都会被立即公开。请在站点「设置」页面为每个 provider 填入自己的 Key。
+const DEFAULT_KEYS: ApiKeyStore = {};
 
 export interface ApiKeyStore {
   zhipu?: string;
