@@ -609,17 +609,22 @@ function tryApplyRebarJson(
   callbacks: AgentCallbacks,
   stateCallbacks: AgentStateCallbacks,
 ): void {
+  if (typeof content !== 'string' || !content) return;
   const REBAR_JSON_RE = /```rebar-json\s*\n([\s\S]*?)\n\s*```/;
   const match = content.match(REBAR_JSON_RE);
   if (!match) return;
 
   const jsonStr = match[1].trim();
-  const result = parseAIResponse(jsonStr, componentType);
-  if (result.success) {
-    const partial = mapSchemaToParams(result.schema, componentType);
-    const fields = Object.keys(partial);
-    callbacks.onModifyParams(partial as Record<string, unknown>);
-    stateCallbacks.onParamsApplied(fields);
+  try {
+    const result = parseAIResponse(jsonStr, componentType);
+    if (result.success) {
+      const partial = mapSchemaToParams(result.schema, componentType);
+      const fields = Object.keys(partial);
+      callbacks.onModifyParams(partial as Record<string, unknown>);
+      stateCallbacks.onParamsApplied(fields);
+    }
+  } catch (err) {
+    console.warn('[tryApplyRebarJson] failed:', err instanceof Error ? err.message : err);
   }
 }
 
