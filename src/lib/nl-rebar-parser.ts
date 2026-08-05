@@ -8,29 +8,34 @@ import { CONCRETE_GRADES, SEISMIC_GRADES } from './anchor';
 
 /** 从 AI 响应文本中提取 JSON 对象 */
 export function extractJSON(text: string): object {
-  // 尝试直接解析
-  const trimmed = text.trim();
   try {
-    return JSON.parse(trimmed);
-  } catch { /* continue */ }
-
-  // 尝试提取 ```json ... ``` 或 ``` ... ```
-  const codeBlockMatch = trimmed.match(/```(?:json)?\s*\n?([\s\S]*?)\n?\s*```/);
-  if (codeBlockMatch) {
+    if (typeof text !== 'string') throw new Error('extractJSON: text is not a string');
+    // 尝试直接解析
+    const trimmed = text.trim();
     try {
-      return JSON.parse(codeBlockMatch[1].trim());
+      return JSON.parse(trimmed);
     } catch { /* continue */ }
-  }
 
-  // 尝试提取第一个 { ... } 块
-  const braceMatch = trimmed.match(/\{[\s\S]*\}/);
-  if (braceMatch) {
-    try {
-      return JSON.parse(braceMatch[0]);
-    } catch { /* continue */ }
-  }
+    // 尝试提取 ```json ... ``` 或 ``` ... ```
+    const codeBlockMatch = trimmed.match(/```(?:json)?\s*\n?([\s\S]*?)\n?\s*```/);
+    if (codeBlockMatch) {
+      try {
+        return JSON.parse(codeBlockMatch[1].trim());
+      } catch { /* continue */ }
+    }
 
-  throw new Error('AI 返回格式异常，无法提取 JSON');
+    // 尝试提取第一个 { ... } 块
+    const braceMatch = trimmed.match(/\{[\s\S]*\}/);
+    if (braceMatch) {
+      try {
+        return JSON.parse(braceMatch[0]);
+      } catch { /* continue */ }
+    }
+
+    throw new Error('AI 返回格式异常，无法提取 JSON');
+  } catch (err) {
+    throw err;
+  }
 }
 
 // ─── 校验辅助 ───
