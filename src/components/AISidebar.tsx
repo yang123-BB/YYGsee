@@ -131,7 +131,7 @@ export function AISidebar({ componentType, currentParams, onApplyParams, context
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [providerId, setProviderId] = useState('deepseek');
+  const [providerId, setProviderId] = useState('zhipu'); // 默认智谱 GLM（免费 + 国内可访问）
   const [model, setModel] = useState('');
   const [showProviderMenu, setShowProviderMenu] = useState(false);
   const [hasAnyKey, setHasAnyKey] = useState(false);
