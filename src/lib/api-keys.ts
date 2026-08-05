@@ -15,6 +15,7 @@ const DEFAULT_KEYS: ApiKeyStore = {
 };
 
 export interface ApiKeyStore {
+  zhipu?: string;
   deepseek?: string;
   qwen?: string;
   kimi?: string;
