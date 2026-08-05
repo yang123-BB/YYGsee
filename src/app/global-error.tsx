@@ -53,39 +53,43 @@ export default function GlobalError({
             99% 是浏览器缓存了过期的 JS chunk —— 请按 <strong style={{ color: '#67e8f9' }}>Ctrl+Shift+R</strong>（Mac: <strong style={{ color: '#67e8f9' }}>Cmd+Shift+R</strong>）强刷一次。
           </p>
 
-          <details
+        <details
+          open
+          style={{
+            background: 'rgba(255,255,255,0.04)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: 8,
+            padding: '12px 16px',
+            marginBottom: 24,
+            fontSize: 13,
+          }}
+        >
+          <summary
             style={{
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: 8,
-              padding: '12px 16px',
-              marginBottom: 24,
-              fontSize: 13,
+              cursor: 'pointer',
+              color: '#cbd5e1',
+              fontWeight: 500,
             }}
           >
-            <summary
-              style={{
-                cursor: 'pointer',
-                color: '#cbd5e1',
-                fontWeight: 500,
-              }}
-            >
-              错误详情（点击展开）
-            </summary>
-            <pre
-              style={{
-                marginTop: 12,
-                whiteSpace: 'pre-wrap',
-                wordBreak: 'break-word',
-                color: '#fca5a5',
-                fontSize: 12,
-                lineHeight: 1.5,
-              }}
-            >
-              {error.message}
-              {error.digest ? `\n\ndigest: ${error.digest}` : ''}
-            </pre>
-          </details>
+            错误详情（已展开，请截图这一整段）
+          </summary>
+          <pre
+            style={{
+              marginTop: 12,
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-word',
+              color: '#fca5a5',
+              fontSize: 11,
+              lineHeight: 1.5,
+              maxHeight: 360,
+              overflow: 'auto',
+            }}
+          >
+            {error.message}
+            {error.digest ? `\n\ndigest: ${error.digest}` : ''}
+            {error.stack ? `\n\nstack:\n${error.stack}` : ''}
+          </pre>
+        </details>
 
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             <button
