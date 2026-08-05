@@ -48,6 +48,7 @@ const REBAR_JSON_RE = /```rebar-json\s*\n([\s\S]*?)\n\s*```/;
 
 /** 从消息中提取 rebar-json 块 */
 function extractRebarJSON(content: string): { json: string; rest: string } | null {
+  if (typeof content !== 'string' || !content) return null;
   const match = content.match(REBAR_JSON_RE);
   if (!match) return null;
   const json = match[1].trim();
@@ -221,23 +222,32 @@ export function AISidebar({ componentType, currentParams, onApplyParams, context
 
   /** Try to detect and apply rebar-json from completed message, returns parse error if failed */
   const tryApplyParams = useCallback((content: string, msgIndex: number): string | null => {
-    const extracted = extractRebarJSON(content);
-    if (!extracted) return null;
+    try {
+      if (typeof content !== 'string' || !content) return null;
+      const extracted = extractRebarJSON(content);
+      if (!extracted) return null;
 
-    const result = parseAIResponse(extracted.json, componentType);
-    if (result.success) {
-      const partial = mapSchemaToParams(result.schema, componentType);
-      const fields = Object.keys(partial);
-      const preview = formatSchemaPreview(result.schema, componentType);
-      onApplyParams(partial);
-      // Run compliance check on the merged params
-      const merged = { ...currentParamsRef.current, ...partial } as AnyParams;
-      const compliance = runComplianceCheck(merged);
-      setApplyResults(prev => ({ ...prev, [msgIndex]: { success: true, fields, preview, compliance } }));
-      return null;
-    } else {
-      setApplyResults(prev => ({ ...prev, [msgIndex]: { success: false, error: result.error } }));
-      return result.error;
+      const result = parseAIResponse(extracted.json, componentType);
+      if (result.success) {
+        const partial = mapSchemaToParams(result.schema, componentType);
+        const fields = Object.keys(partial);
+        const preview = formatSchemaPreview(result.schema, componentType);
+        onApplyParams(partial);
+        // Run compliance check on the merged params
+        const merged = { ...currentParamsRef.current, ...partial } as AnyParams;
+        const compliance = runComplianceCheck(merged);
+        setApplyResults(prev => ({ ...prev, [msgIndex]: { success: true, fields, preview, compliance } }));
+        return null;
+      } else {
+        setApplyResults(prev => ({ ...prev, [msgIndex]: { success: false, error: result.error } }));
+        return result.error;
+      }
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : '解析失败';
+      try {
+        setApplyResults(prev => ({ ...prev, [msgIndex]: { success: false, error: errMsg } }));
+      } catch { /* no-op */ }
+      return errMsg;
     }
   }, [componentType, onApplyParams, runComplianceCheck]);
 
