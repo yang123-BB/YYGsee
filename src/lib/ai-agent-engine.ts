@@ -254,7 +254,7 @@ async function streamFinalResponse(
  * 复杂请求触发 Agent 规划器，先规划再执行
  */
 function detectComplexRequest(text: string): boolean {
-  if (!text || text.length < 10) return false;
+  if (typeof text !== 'string' || !text || text.length < 10) return false;
   // 关键词: 多步骤操作信号
   const COMPLEX_KEYWORDS = /优化|对比.*方案|分析.*修改|检查.*并.*改|先.*再.*然后|整体.*调整|最经济|最优|全面|逐项/;
   // 多动词: 含2个以上动作词
