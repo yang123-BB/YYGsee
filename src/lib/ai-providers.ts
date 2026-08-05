@@ -19,6 +19,15 @@ export interface AIProvider {
 
 export const AI_PROVIDERS: AIProvider[] = [
   {
+    id: 'zhipu',
+    name: '智谱 GLM (免费·推荐)',
+    baseUrl: 'https://open.bigmodel.cn/api/paas/v4',
+    defaultModel: 'glm-4-flash',
+    models: ['glm-4-flash', 'glm-4v-flash', 'glm-4-flashx', 'glm-4-long'],
+    visionModel: 'glm-4v-flash',
+    envKey: 'ZHIPU_API_KEY',
+  },
+  {
     id: 'deepseek',
     name: 'DeepSeek',
     baseUrl: 'https://api.deepseek.com/v1',
