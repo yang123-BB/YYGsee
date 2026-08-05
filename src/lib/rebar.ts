@@ -16,6 +16,7 @@ function parseSingleSegment(s: string): RebarSegment | null {
 }
 
 export function parseRebar(str: string): RebarInfo {
+  if (typeof str !== 'string' || !str) return { count: 2, grade: 'C', diameter: 20 };
   // 支持 22G101 平法格式:
   // 基本: "2C25" → 2根C25
   // 带排数: "6C25(2)" → 6根C25分2排
@@ -90,12 +91,14 @@ export function parseRebarBottom(str: string): RebarInfo {
 
 // 板筋格式: "C10@150" => { grade:'C', diameter:10, spacing:150 }
 export function parseSlabRebar(str: string): { grade: string; diameter: number; spacing: number } {
+  if (typeof str !== 'string' || !str) return { grade: 'C', diameter: 10, spacing: 150 };
   const m = str.match(/([A-Za-z])(\d+)@(\d+)/);
   if (!m) return { grade: 'C', diameter: 10, spacing: 150 };
   return { grade: m[1].toUpperCase(), diameter: parseInt(m[2]), spacing: parseInt(m[3]) };
 }
 
 export function parseStirrup(str: string): StirrupInfo {
+  if (typeof str !== 'string' || !str) return { grade: 'A', diameter: 8, spacingDense: 100, spacingNormal: 200, legs: 2 };
   // Support optional type code prefix: "B-A10@100/200(4)" or legacy "A10@100/200(4)"
   const withType = str.match(/^([A-F])-([A-Za-z])(\d+)@(\d+)(?:\/(\d+))?\((\d+)\)$/);
   if (withType) {
@@ -285,6 +288,7 @@ export interface SideBarInfo {
 }
 
 export function parseSideBar(str: string): SideBarInfo | null {
+  if (typeof str !== 'string' || !str) return null;
   const m = str.match(/^([GN])(\d+)([A-Za-z])(\d+)$/);
   if (!m) return null;
   return {
@@ -306,6 +310,7 @@ export interface TieBarInfo {
 }
 
 export function parseTieBar(str: string): TieBarInfo | null {
+  if (typeof str !== 'string' || !str) return null;
   const m = str.match(/^([A-Za-z])(\d+)$/);
   if (!m) return null;
   return { grade: m[1].toUpperCase(), diameter: parseInt(m[2]) };
