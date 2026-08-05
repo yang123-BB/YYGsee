@@ -15,6 +15,7 @@ export interface AIProvider {
   extraParams?: Record<string, unknown>;  // merged into every API request payload
   authHeader?: 'bearer' | 'api-key';  // auth header style; default 'bearer' (Authorization: Bearer)
   maxTokensParam?: 'max_tokens' | 'max_completion_tokens';  // default 'max_tokens'
+  maxTokens?: number | Record<string, number>;  // override default max_tokens; can be a per-model map for providers with model-specific caps
 }
 
 export const AI_PROVIDERS: AIProvider[] = [
@@ -26,6 +27,13 @@ export const AI_PROVIDERS: AIProvider[] = [
     models: ['glm-4-flash', 'glm-4v-flash', 'glm-4-flashx', 'glm-4-long'],
     visionModel: 'glm-4v-flash',
     envKey: 'ZHIPU_API_KEY',
+    // 智谱各模型 max_tokens 上限不一样：glm-4v-flash 只允许 [1,1024]，其他 Flash 系列允许 4096
+    maxTokens: {
+      'glm-4-flash': 4096,
+      'glm-4v-flash': 1024,
+      'glm-4-flashx': 4096,
+      'glm-4-long': 4096,
+    },
   },
   {
     id: 'deepseek',
