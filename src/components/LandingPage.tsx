@@ -415,6 +415,40 @@ export function LandingPage() {
         </div>
       </section>
 
+      {/* ═══════ 真实图纸案例 ═══════ */}
+      <section className="relative border-b border-white/[0.06] bg-[#07111d] py-8">
+        <div className="w-full px-5 sm:px-8 lg:px-12">
+          <Link
+            href="/case-c01-floor.html"
+            className="group grid gap-5 overflow-hidden rounded-2xl border border-emerald-300/25 bg-gradient-to-r from-emerald-500/[0.08] to-transparent p-5 transition-all hover:border-emerald-300/50 sm:grid-cols-[220px_1fr] sm:p-6"
+          >
+            <div className="relative h-36 overflow-hidden rounded-xl border border-white/10 bg-slate-950/60 sm:h-auto">
+              <Image
+                src="/case-c01-floor.png"
+                alt="C01 配电室整层 3D 模型"
+                fill
+                sizes="(min-width: 640px) 220px, 100vw"
+                className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+            <div className="flex flex-col justify-center">
+              <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300">
+                <Sparkles className="h-3.5 w-3.5" /> NEW · 真实图纸案例
+              </div>
+              <h3 className="text-xl font-bold text-white sm:text-2xl">从施工图 DXF 直接生成的整层 3D 模型</h3>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
+                10kV 配电室 C01：轴网归一、柱梁板基础全构件拼装，几何与配筋数据全部来自图纸明文，附完整工程量。
+                旋转 · 剖切 · 图层开关，所见即所算。
+              </p>
+              <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-emerald-300 transition-colors group-hover:text-emerald-200">
+                进入整层模型
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </div>
+            </div>
+          </Link>
+        </div>
+      </section>
+
       {/* ═══════ STATS BAR ═══════ */}
       <section className="relative border-y border-white/[0.06] bg-[#07111d]">
         <div className="relative grid w-full grid-cols-2 gap-px px-5 py-8 sm:px-8 md:grid-cols-4 lg:px-12">
